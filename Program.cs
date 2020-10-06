@@ -62,30 +62,15 @@ namespace Minesweeper
             return new Grid(_height, _width);
         }
 
+        private void getCoordinates()
+        {
+        }
+
         private static void Main(string[] args)
         {
+            //get the grid sizes form the User
             var g1 = getGridSize();
-
-            Field hTest = new Field();
-            hTest = g1.topLeftField;
-
-            Field vTest = new Field();
-            vTest = g1.topLeftField;
-
-            while (vTest.Bottom != null)
-            {
-                Console.WriteLine(vTest.Output);
-                hTest = vTest;
-
-                while (hTest.Right != null)
-                {
-                    Console.Write($"{hTest.Output} \t");
-                    hTest = hTest.Right;
-                }
-                Console.Write(hTest.Output);
-
-                vTest = vTest.Bottom;
-            }
+            g1.GridDisplay();
         }
     }
 }

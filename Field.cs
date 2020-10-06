@@ -9,7 +9,6 @@ namespace Minesweeper
         internal Field Left { get; set; }
         internal Field Top { get; set; }
         internal Field Bottom { get; set; }
-        internal int Output { get; set; }
 
         //creates new Field
         public Field()
@@ -22,6 +21,10 @@ namespace Minesweeper
             {
                 IsBomb = true;
             }
+        }
+
+        internal void getBombsAround()
+        {
         }
     }
 }
