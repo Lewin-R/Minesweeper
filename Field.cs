@@ -7,6 +7,8 @@ namespace Minesweeper
         internal bool IsBomb { get; set; } = false;
         internal Field Right { get; set; }
         internal Field Left { get; set; }
+        internal Field Top { get; set; }
+        internal Field Bottom { get; set; }
         internal int Output { get; set; }
 
         //creates new Field

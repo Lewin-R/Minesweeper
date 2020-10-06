@@ -1,25 +1,24 @@
-﻿using System;
-
-namespace Minesweeper
+﻿namespace Minesweeper
 {
     internal class Grid
     {
         private int GHeight { get; }
         private int GWidth { get; }
 
-
-
-        private Field topLeftField = null;
+        public Field topLeftField = null;
 
         public Grid(int height, int width)
         {
             GHeight = height;
             GWidth = width;
 
+            //Initialize first of row
+            var firstOfRow = new Field();
+
             for (int i = 0; i < GHeight; i++)//to get every column
             {
-                //Initialize first of row
-                var firstOfRow = new Field();
+                var firstOfPreviousRow = firstOfRow;
+                firstOfRow = new Field();
 
                 //to safe the start
                 if (i == 0)
@@ -37,15 +36,25 @@ namespace Minesweeper
                     }
 
                     var initField = new Field();
+
+                    //to  make the connection between left and right
                     if (j != width - 1)
                     {
-                       
                         currenField.Right = initField;
                         initField.Left = currenField;
-
                     }
+
+                    //to check if i = 0 it does set the
+                    if (i != 0)
+                    {
+                        currenField.Top = firstOfPreviousRow;
+                        firstOfPreviousRow.Bottom = currenField;
+                    }
+
                     currenField = initField;
-                    
+                    currenField.Output = 1500 + j;
+
+                    if (i != 0) { firstOfPreviousRow = firstOfPreviousRow.Right; } //check ich noch nicht ganz
                 }
             }
         }
