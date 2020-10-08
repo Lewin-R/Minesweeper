@@ -6,8 +6,9 @@ namespace Minesweeper
     {
         private int GHeight { get; }
         private int GWidth { get; }
-
         public Field topLeftField;
+
+        internal int MineCount;
 
         public Grid(int height, int width)
         {
@@ -53,9 +54,15 @@ namespace Minesweeper
                         firstOfPreviousRow.Bottom = currenField;
                     }
 
+                    //to get the count of mines
+                    if (currenField.IsMine)
+                    {
+                        MineCount++;
+                    }
+
                     currenField = initField;
 
-                    if (i != 0) { firstOfPreviousRow = firstOfPreviousRow.Right; } //check ich noch nicht ganz
+                    if (i != 0) { firstOfPreviousRow = firstOfPreviousRow.Right; }
                 }
             }
         }
@@ -73,7 +80,6 @@ namespace Minesweeper
             for (int i = 0; i <= GWidth - 1; i++)
             {
                 Console.Write(((char)(i + (int)'A') + " "));
-
             }
 
             Console.WriteLine();
@@ -96,7 +102,8 @@ namespace Minesweeper
 
                 while (yAxis.Right != null)
                 {
-                    Console.Write("? ");
+                    Console.Write(yAxis.ChangeSymbols() + " ");
+                    Console.ResetColor();
                     yAxis = yAxis.Right;
                 }
                 Console.WriteLine();
@@ -104,6 +111,29 @@ namespace Minesweeper
                 xAxis = xAxis.Bottom;
                 Counter++;
             }
+        }
+
+        internal Field FieldSelection(char x, int y) //übergabeparameter
+        {
+            //get the column
+            int xi = (int)x - 65;
+
+            
+            Field result = topLeftField;
+
+            //to get the column
+            for (int i = 0; i < xi; i++)
+            {
+                result = result.Right;
+            }
+
+            //to get the row
+            for (int i = 0; i < y-1; i++)
+            {
+                result = result.Bottom;
+            }
+
+            return result;
         }
     }
 }
