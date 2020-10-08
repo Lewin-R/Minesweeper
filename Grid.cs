@@ -31,7 +31,7 @@ namespace Minesweeper
 
                 Field currenField = null; //shouldn't be initialized
 
-                for (int j = 0; j <= GWidth; j++) //to get every row
+                for (int j = 0; j <= GWidth-1; j++) //to get every row
                 {
                     if (j == 0)
                     {
@@ -116,24 +116,38 @@ namespace Minesweeper
         internal Field FieldSelection(char x, int y) //übergabeparameter
         {
             //get the column
-            int xi = (int)x - 65;
-
-            
             Field result = topLeftField;
 
+            int xi = (int)x - 65;
             //to get the column
             for (int i = 0; i < xi; i++)
             {
-                result = result.Right;
+                try
+                {
+                    result = result.Right;
+                }
+                catch (NullReferenceException e)
+                {
+                    Console.WriteLine(e);
+                }
             }
 
             //to get the row
-            for (int i = 0; i < y-1; i++)
-            {
-                result = result.Bottom;
-            }
+                for (int i = 0; i < y - 1; i++)
+                {
+                    try
+                    { 
+                        result = result.Bottom;
+                    }
+                    catch (NullReferenceException e)
+                    {
+                        Console.WriteLine(e);
+                        Input.GetCoordinates();
+                    }
+                }
 
-            return result;
+
+                return result;
         }
     }
 }

@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Threading;
 
 namespace Minesweeper
 {
     internal class Program
     {
         internal static bool GameOver;
-
+        internal static int i = 1;
         private static void Main(string[] args)
         {
-            Console.ResetColor();
             //get the grid sizes form the User
             Input.grid = Input.GetGridSize();
+            Timer.SetTimer();
             int selection = 0;
             while (!GameOver)
             {
@@ -23,6 +22,7 @@ namespace Minesweeper
                 if (Input.grid.MineCount == 0)
                 {
                     Console.WriteLine("Congratulation, you have won!");
+                    Timer.EndTimer();
                     return;
                 }
 
