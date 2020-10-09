@@ -4,11 +4,8 @@ namespace Minesweeper
 {
     internal class Grid
     {
-        private int GHeight { get; }
-        private int GWidth { get; }
-        public Field topLeftField;
-
         internal int MineCount;
+        public Field topLeftField;
 
         public Grid(int height, int width)
         {
@@ -16,11 +13,11 @@ namespace Minesweeper
             GWidth = width;
 
             //Initialize first of row
-            var firstOfRow = new Field();
+            Field firstOfRow = new Field();
 
-            for (int i = 0; i <= GHeight; i++) //to get every column
+            for (int i = 0; i < GHeight; i++) //to get every column
             {
-                var firstOfPreviousRow = firstOfRow;
+                Field firstOfPreviousRow = firstOfRow;
                 firstOfRow = new Field();
 
                 //to safe the start
@@ -31,14 +28,14 @@ namespace Minesweeper
 
                 Field currenField = null; //shouldn't be initialized
 
-                for (int j = 0; j <= GWidth-1; j++) //to get every row
+                for (int j = 0; j < GWidth; j++) //to get every row
                 {
                     if (j == 0)
                     {
                         currenField = firstOfRow;
                     }
 
-                    var initField = new Field();
+                    Field initField = new Field();
 
                     //to  make the connection between left and right
                     if (j != width)
@@ -67,50 +64,70 @@ namespace Minesweeper
             }
         }
 
+        private int GHeight { get; }
+        private int GWidth { get; }
+
         public void GridDisplay()
         {
             //Output of the grid
             Field yAxis = topLeftField;
             Field xAxis = topLeftField;
-            int Counter = 1;
+            int counter = 1;
 
             Console.Clear();
 
-            Console.Write("      ");
-            for (int i = 0; i <= GWidth - 1; i++)
+            PrintHeaderOfTable();
+
+            while (xAxis != null)
             {
-                Console.Write(((char)(i + (int)'A') + " "));
+                PrintRowSelector(counter);
+                yAxis = xAxis;
+
+                while (yAxis.Right != null)
+                {
+                    yAxis.Print();
+                    //Console.Write(yAxis.ChangeSymbols() + " ");
+                    //Console.ResetColor();
+                    Console.Write(" ");
+                    yAxis = yAxis.Right;
+                }
+
+                Console.WriteLine();
+
+                xAxis = xAxis.Bottom;
+                counter++;
+            }
+        }
+
+        private void PrintRowSelector(int counter)
+        {
+            Console.Write(counter);
+            if (counter < 10)
+            {
+                Console.Write(" ");
+            }
+
+            Console.Write(" ¦¦ ");
+
+        }
+
+        private void PrintHeaderOfTable()
+        {
+            //Create the alphabet
+            Console.Write("      ");
+            for (int i = 0; i < GWidth; i++)
+            {
+                Console.Write((char)(i + 'A') + " ");
             }
 
             Console.WriteLine();
             Console.Write("   ##");
 
-            for (int i = 0; i <= GWidth - 1; i++)
+            for (int i = 0; i < GWidth; i++)
             {
                 Console.Write("--");
             }
-
             Console.WriteLine();
-
-            while (xAxis.Bottom != null)
-            {
-                Console.Write(Counter);
-                if (Counter < 10) Console.Write(" ");
-                Console.Write(" ¦¦ ");
-
-                yAxis = xAxis;
-
-                while (yAxis.Right != null)
-                {
-                    Console.Write(yAxis.ChangeSymbols() + " ");
-                    Console.ResetColor();
-                    yAxis = yAxis.Right;
-                }
-                Console.WriteLine();
-
-                xAxis = xAxis.Bottom;
-                Counter++;
-            }
         }
 
         internal Field FieldSelection(char x, int y) //übergabeparameter
@@ -118,7 +135,7 @@ namespace Minesweeper
             //get the column
             Field result = topLeftField;
 
-            int xi = (int)x - 65;
+            int xi = x - 65;
             //to get the column
             for (int i = 0; i < xi; i++)
             {
@@ -126,28 +143,28 @@ namespace Minesweeper
                 {
                     result = result.Right;
                 }
-                catch (NullReferenceException e)
+                catch (Exception e)
                 {
-                    Console.WriteLine(e);
+                    Console.WriteLine("The entered coordinates don't exist!");
+                    Input.GetCoordinates();
                 }
             }
 
             //to get the row
-                for (int i = 0; i < y - 1; i++)
+            for (int i = 0; i < y - 1; i++)
+            {
+                try
                 {
-                    try
-                    { 
-                        result = result.Bottom;
-                    }
-                    catch (NullReferenceException e)
-                    {
-                        Console.WriteLine(e);
-                        Input.GetCoordinates();
-                    }
+                    result = result.Bottom;
                 }
+                catch (Exception e)
+                {
+                    Console.WriteLine("The entered coordinates don't exist!");
+                    Input.GetCoordinates();
+                }
+            }
 
-
-                return result;
+            return result;
         }
     }
 }

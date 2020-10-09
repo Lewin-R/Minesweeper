@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 
 namespace Minesweeper
 {
@@ -106,7 +105,6 @@ namespace Minesweeper
             {
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
                 return "?";
-                
             }
 
             if (IsFlagged)
@@ -126,7 +124,6 @@ namespace Minesweeper
                 {
                     Console.ForegroundColor = ConsoleColor.DarkGray;
                     return "~";
-                    
                 }
                 else
                 {
@@ -139,7 +136,7 @@ namespace Minesweeper
         {
             if (IsCovert)
             {
-                if(IsFlagged)
+                if (IsFlagged)
                 {
                     Console.WriteLine("You can't uncover flagged Fields, unflagg it first");
                 }
@@ -183,7 +180,6 @@ namespace Minesweeper
                 IsFlagged = true;
                 IsCovert = false;
                 Input.grid.MineCount--;
-                
             }
             else
             {
@@ -203,6 +199,13 @@ namespace Minesweeper
             {
                 Console.WriteLine("You can't unflagg unflagged fields");
             }
+        }
+
+        public void Print()
+        {
+            var x = ChangeSymbols();
+            Console.Write(x);
+            Console.ResetColor();
         }
     }
 }
